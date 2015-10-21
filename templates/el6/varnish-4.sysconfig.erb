@@ -1,4 +1,9 @@
 ### This file created by Puppet, modification is probably futile
+<% if scope['::varnish::varnish_version'] == '4.1' -%>
+NFILES=131072
+MEMLOCK=82000
+NPROCS="unlimited"
+<% end -%>
 RELOAD_VCL=1
 VARNISH_VCL_CONF=<%= scope['::varnish::vcl_conf'] %>
 VARNISH_LISTEN_ADDRESS=<%= scope['::varnish::listen'] %>
