@@ -16,8 +16,10 @@ VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>"
 <% end -%>
 VARNISH_STORAGE_SIZE=<%= scope['::varnish::storage_size'] %>
 VARNISH_STORAGE="${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
+<% if scope['::varnish::varnish_version'] == '4.0' -%>
 VARNISH_USER=varnish
 VARNISH_GROUP=varnish
+<% end -%>
 VARNISH_TTL=120
 
 DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
@@ -27,7 +29,9 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -p thread_pool_min=${VARNISH_MIN_THREADS} \
              -p thread_pool_max=${VARNISH_MAX_THREADS} \
              -p thread_pool_timeout=${VARNISH_THREAD_TIMEOUT} \
+             <% if scope['::varnish::varnish_version'] == '4.0' -%>
              -u ${VARNISH_USER} -g ${VARNISH_GROUP} \
+             <% end -%>
              -S ${VARNISH_SECRET_FILE} \
              -s ${VARNISH_STORAGE}"
 <% scope['::varnish::runtime_params'].each do |k,v| -%>
